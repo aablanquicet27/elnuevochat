@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
-import { useAuth } from '../../hooks/useAuth';
-import { useChatbots } from '../../hooks/useChatbots';
-import Layout from '../../components/layout/Layout';
+import { useAuth } from '../hooks/useAuth';
+import { useChatbots } from '../hooks/useChatbots';
+import Layout from '../components/layout/Layout';
 
 export default function Dashboard() {
   const { user, loading: authLoading, isAuthenticated } = useAuth();

@@ -1,34 +1,36 @@
-// pages/api/auth/[...supabase].js
-import { createServerClient } from '@supabase/ssr'
-import { NextResponse } from 'next/server'
-import { cookies } from 'next/headers'
+// pages/api/auth/callback.js
+import { createServerClient } from '@supabase/ssr';
+import { NextResponse } from 'next/server';
+import { cookies } from 'next/headers';
 
-export async function GET(request) {
-  const cookieStore = cookies()
+export default async function handler(req, res) {
+  // Crear cliente de Supabase
   const supabase = createServerClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL,
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
     {
       cookies: {
-        get(name) {
-          return cookieStore.get(name)?.value
+        get: (name) => {
+          const cookie = req.cookies[name];
+          return cookie ? { name, value: cookie } : undefined;
         },
-        set(name, value, options) {
-          cookieStore.set({ name, value, ...options })
+        set: (name, value, options) => {
+          res.setHeader('Set-Cookie', `${name}=${value}; Path=/; HttpOnly; SameSite=Lax`);
         },
-        remove(name, options) {
-          cookieStore.set({ name, value: '', ...options })
+        remove: (name, options) => {
+          res.setHeader('Set-Cookie', `${name}=; Path=/; HttpOnly; SameSite=Lax; Max-Age=0`);
         },
       },
     }
-  )
+  );
 
-  const { searchParams } = new URL(request.url)
-  const code = searchParams.get('code')
+  // Obtener el código de la URL
+  const { code } = req.query;
   
   if (code) {
-    await supabase.auth.exchangeCodeForSession(code)
+    await supabase.auth.exchangeCodeForSession(code);
   }
 
-  return NextResponse.redirect(new URL('/dashboard', request.url))
+  // Redirigir al dashboard
+  res.redirect('/dashboard');
 }
