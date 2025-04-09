@@ -3,18 +3,7 @@
 -- Habilitar extensión UUID
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 
--- Tabla de perfiles de usuario (extiende la tabla auth.users de Supabase)
-CREATE TABLE profiles (
-  id UUID REFERENCES auth.users(id) PRIMARY KEY,
-  email TEXT NOT NULL,
-  full_name TEXT,
-  avatar_url TEXT,
-  created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
-  updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
-  plan_id UUID REFERENCES plans(id) DEFAULT NULL
-);
-
--- Tabla de planes de suscripción
+-- Tabla de planes de suscripción (movida antes de profiles para evitar el error de referencia)
 CREATE TABLE plans (
   id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
   name TEXT NOT NULL,
@@ -25,6 +14,17 @@ CREATE TABLE plans (
   is_active BOOLEAN DEFAULT TRUE,
   created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
   updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+
+-- Tabla de perfiles de usuario (extiende la tabla auth.users de Supabase)
+CREATE TABLE profiles (
+  id UUID REFERENCES auth.users(id) PRIMARY KEY,
+  email TEXT NOT NULL,
+  full_name TEXT,
+  avatar_url TEXT,
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+  updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+  plan_id UUID REFERENCES plans(id) DEFAULT NULL
 );
 
 -- Tabla de chatbots
