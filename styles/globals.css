@@ -1,0 +1,36 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --primary-gradient: linear-gradient(135deg, #ff6b6b 0%, #a16bff 100%);
+  --secondary-gradient: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+}
+
+body {
+  @apply bg-gray-50 text-gray-900;
+}
+
+.gradient-primary {
+  background: var(--primary-gradient);
+}
+
+.gradient-secondary {
+  background: var(--secondary-gradient);
+}
+
+.btn-primary {
+  @apply px-6 py-2 rounded-md text-white font-medium gradient-primary hover:opacity-90 transition-opacity;
+}
+
+.btn-secondary {
+  @apply px-6 py-2 rounded-md border border-gray-300 hover:bg-gray-100 transition-colors;
+}
+
+.card {
+  @apply bg-white rounded-xl shadow-md p-6;
+}
+
+.input {
+  @apply w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent;
+}
