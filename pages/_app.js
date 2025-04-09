@@ -1,13 +1,8 @@
-// pages/_app.js actualizado con AuthProvider
-import '../styles/globals.css';
-import { AuthProvider } from '../hooks/useAuth';
+import React from 'react';
 
-function MyApp({ Component, pageProps }) {
-  return (
-    <AuthProvider>
-      <Component {...pageProps} />
-    </AuthProvider>
-  );
-}
+// Componente simple para evitar problemas de importación
+const App = ({ Component, pageProps }) => {
+  return <Component {...pageProps} />;
+};
 
-export default MyApp;
+export default App;
